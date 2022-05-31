@@ -37,12 +37,15 @@ var IonicDeeplink = {
   route: function (paths, success, error) {
     var self = this;
     this.paths = paths;
-
+    console.log("DEEPLINK PATHS", paths);
     this.onDeepLink(function (data) {
+      console.log("DEEPLINK ONDEEPLINK INVOKED", data);
+
       var realPath = self._getRealPath(data);
+      console.log("DEEPLINK REAL_PATH", realPath);
 
       var args = self._queryToObject(data.queryString);
-
+      console.log("DEEPLINK ARGS", args);
       var matched = false;
       var finalArgs;
       var pathData;
@@ -51,11 +54,12 @@ var IonicDeeplink = {
         pathData = paths[targetPath];
 
         var matchedParams = self.routeMatch(targetPath, realPath);
-
+        console.log("DEEPLINK MATCHED PARAMS", matchedParams);
         if (matchedParams !== false) {
           matched = true;
+          console.log("DEEPLINK MATCHING!");
           finalArgs = extend({}, matchedParams, args);
-
+          console.log("DEEPLINK FINAL ARGS", finalArgs);
           break;
         }
       }
@@ -75,7 +79,7 @@ var IonicDeeplink = {
       }
 
       if (typeof (error) === 'function') {
-        console.log('No Match found');
+        console.log('No Match found', data);
         error({ $link: data });
       }
     })
